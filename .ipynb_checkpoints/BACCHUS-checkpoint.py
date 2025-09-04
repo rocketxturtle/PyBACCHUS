@@ -135,6 +135,7 @@ class BACCHUS(object):
                 line = '{}, {}'.format(count, i)
                 print(line)
         file.close()
+        #opens init.com for checking.
 
     def edit_module(self, module_name,line_number, text, new_filename='',make_new=False):
         #opens init.com for editing. Should be able to make a new init.com if asked. 
