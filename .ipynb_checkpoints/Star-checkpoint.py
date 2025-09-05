@@ -1,127 +1,86 @@
 from astropy import *
 import astropy.units as u
 from astropy.io import fits
-import numpy as np
-# import glob as glob
-import pandas as pd
 from astropy.table import Table,vstack,hstack
 from astropy.io import ascii
+import numpy as np
+import pandas as pd
 import random
 import warnings
 
 import math
-import numpy as np
 import matplotlib.pyplot as plt
-from astropy.table import Table
 import glob
-# import imports.py
+
 from BACCHUS import BACCHUS
+from par import *
+from plt import *
+from abu import *
+from eqw import *
+from Results import *
 
-class Star(BACCHUS):
-    def __init__(self, name, wavelengths, flux, cntm=None,flux_err=None):
-        """
-        Instantiate a Star object. This requires at a minimum the name of the star and the filepath to its spectrum
-        """
+class Star(object):
+    def __init__(self,name):
         self.name = name
-        self.waves = wavelengths
-        self.flux = flux
-        self.cntm = cntm
-        self.flux_err = flux_err
+        self.path = None
+        self.best_parameters = None
+        self.par = None
 
-    def get_spectrum_path(self , spectra_path):
+        self.atomic_symbols = ['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al',
+ 'Si','P','S','Cl','Ar','K','Ca','Sc','Ti','V','Cr','Mn','Fe',
+ 'Co','Ni','Cu','Zn','Ga','Ge','As','Se','Br','Kr','Rb','Sr','Y',
+ 'Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd','In','Sn','Sb','Te',
+ 'I','Xe','Cs','Ba','La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb',
+ 'Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','W','Re','Os','Ir','Pt',
+ 'Au','Hg','Tl','Pb','Bi','Po','At','Rn','Fr','Ra','Ac','Th','Pa',
+ 'U']
+        self.Abundance = dict() 
+        for i in self.atomic_symbols:
+            self.Abundance[i] = None
+        
+
+    def get_par(self, path):
+        self.path = path
+        self.par = Par(self.path + '{}.par'.format(self.name))
+
+    def get_abundance(self, element):
+        self.Abundance[element] = Results(self.path,self.name,element)
+
+    def get_best_parameters(self):
+        self.par = Par(self.path + '{}.par'.format(self.name))
+
+    def set_initial_values(self, spectra_path, teff, logg, m_h, v_micro, conv):
+        
         self.spectra_path = spectra_path
-
-    ##### PREPROCESSING #####
-
-    def set_initial_guesses(self, teff, logg, m_h, vmicro,conv):
-        """These are the initial guesses required for stellar_parameters.tab. Here we also set the guesses for the line selection and any potential guesses for the x_H abundances. The abundance guesses will be transformed to A(x) values and passed to star.par before running that element.
-        """
         self.teff = teff
         self.logg = logg
         self.m_h = m_h
-        self.vmicro = vmicro
+        self.vmicro = v_micro
         self.conv = conv
 
-        self.line_selection = dict()
-        self.abundances = dict()
+    def get_spectrum(self, has_uncertainties=False):
+        data = np.loadtxt(self.spectra_path)
+        self.waves = data[:,0]
+        self.flux = data[:,1]
+        if has_uncertainties == True:
+            self.flux = data[:,2]
 
-
-
-    def view_obs_spectra(self):
+    def view_obs_spectra(self,xlabel='Wavelength [Angstroms]',ylabel='Rectified Flux',savefig=False):
         """
         View the observed spectra to make sure it's 100% okay. Useful for smoothbrains like me who get their file indexing wrong.
         """
         plt.figure(figsize=(14,4))
         plt.plot(self.waves,self.flux)
-
-
-    def view_obs_line_windows(self, elem):
-        """
-        View the observed spectra to make sure it's 100% okay. Useful for smoothbrains like me who get their file indexing wrong.
-        """
-        plt.figure(figsize=(14,4))
-        plt.plot(self.waves,self.flux)
-            
-
-    def add2stellarparams(self,spectra_path, name):
-        """
-        Add the star to stellar_parameters.tab here. Will probably need to check if an entry with that name already exists and if so overwrite it.
-        """
-        self.spectra_path = spectra_path
-        self.name = name
-        pass
+        plt.xlabel(xlabel, fontsize=15)
+        plt.ylabel(ylabel, fontsize=15)
+        plt.title(self.name, fontsize=15)
+        plt.tight_layout()
+        if savefig==True:
+            plt.savefig('{}_observed_spectrum.jpg'.format(self.name))
 
     ##### ABUNDANCE INFORMATION #####
 
-    def get_star_par(self):
-        """
-        returns star.par file and allows for editing.
-        """
-        pass
 
-    def get_abu(self,element):
-        """
-        I think this should just be getting the x_.abu file, and transforming it into a pandas dataframe. will need to figure out how to transform df back to file tho for updating purposes.
-        """
-        pass
-
-    def get_plt(self, element):
-        """
-        I think this should just be getting the x_.plt file, and transforming it into a pandas dataframe. will need to figure out how to transform df back to file tho for updating purposes.
-        """
-        pass
-
-    def get_tab(self, element):
-        """
-        I think this should just be getting the x_.tab file, and transforming it into a pandas dataframe. will need to figure out how to transform df back to file tho for updating purposes.
-        """
-        pass
-
-    def get_list(self, element):
-        """
-        I think this should just be getting the x_.list file, and transforming it into a pandas dataframe. will need to figure out how to transform df back to file tho for updating purposes.
-        """
-        pass
-
-    def display_fits(self, element):
-        """
-        For a given element, display the SuperMongo .pdf abundance fits. Have the option to return them as a plt object for export purposes?
-        """
-        pass
-
-    def set_good_lines(self,elems = [],lines=[]):
-        """
-        For updating the line selection for a single star. WILL NOT UPDATE ELEMENTS.WLN. Thinking if this is not empty, BACCHUS.abund() should be fed only these lines.
-        Could have an automated mode, but i think shutoff on default for doublechecking.
-        """
-        for i, count in enumerate(elems):
-            self.line_selection[i] = lines[count]
-
-    def set_abundance(self, element, x_H, e_x_H):
-        """
-        Pass an A(x) abundance to star.par to inform the model.
-        """
-        pass
 
     ##### STAR PARAMETERS #####
 

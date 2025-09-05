@@ -9,36 +9,11 @@ import os
 
 from helper_methods import *
 
-class Bsyn(object):
+class Tab(object):
     def __init__(self,path):
         self.path = path
         self.read()
 
-        self.nfiles_start_idx = get_linenumber(self.lines, "'NFILES", idx=0)
-        self.nfiles_end_idx = get_linenumber(self.lines, "'SPHERICAL:'", idx=0)
-
-        self.files = np.array(self.lines[self.nfiles_start_idx+1:self.nfiles_end_idx])
-        
-        self.nfiles = int(len(self.files))
-        self.lines[self.nfiles_start_idx] = "'NFILES   :' '{}'\n".format(self.nfiles)
-
-    def add_linelists(self, files):
-        if len(files) > 0:
-            self.nfiles = self.nfiles + len(files)
-            self.lines[self.nfiles_start_idx] = "'NFILES   :' '{}'\n".format(self.nfiles)
-            for count, i in enumerate(self.lines):
-                if count == self.nfiles_start_idx + 1:
-                    self.lines = np.insert(self.lines, self.nfiles_start_idx + 2, files)
-
-    def remove_linelists(self, files):
-        if len(files) > 0:
-            truth = np.isin(self.lines,files)
-            self.lines = np.array(self.lines)[truth==False]
-            truth = np.isin(self.files,files)
-            self.files = np.array(self.files)[truth==False]
-            self.nfiles = self.nfiles - len(files)
-            
-            self.lines[self.nfiles_start_idx] = "'NFILES   :' '{}'\n".format(self.nfiles)
 
     def show(self):
         for n, i in enumerate(self.lines):
@@ -64,9 +39,10 @@ class Bsyn(object):
         for count,i in enumerate(self.lines):
             if count != line_number:
                 self.lines[count] = i
+        self.write()
 
-    def add_line(self, line2add, line_num = -1):
-        if line_num == -1:
+    def add_line(self, line2add, line_num = len(self.lines)):
+        if line_num == len(self.lines):
             self.lines = np.insert(self.lines,len(self.lines), line2add)
         else:
             self.lines = np.insert(self.lines,line_num, line2add)
@@ -82,4 +58,3 @@ class Bsyn(object):
     def remove_lines(self, lines2remove):
         truth = np.isin(self.lines,lines2remove)
         self.lines = np.array(self.lines)[truth==False]
-        

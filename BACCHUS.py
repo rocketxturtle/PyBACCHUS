@@ -52,15 +52,16 @@ class BACCHUS(object):
         if os.path.isdir(backup_filename):
             print('backup directory already exists!')
         else:
-            os.chdir(self.path)
             subprocess.call(['mkdir',backup_filename])
+            p = subprocess.Popen(['mkdir',backup_filename], cwd=self.path)
             for i in module_names:
-                current_path = '{}/{}'.format(self.path, i)
-                backup_path = '{}/module_backups/'.format(self.path)
+                backup_path = '/module_backups/'.format(i)
                 subprocess.call(['cp',current_path, backup_path])
-            os.chdir(self.current_path)
+                p = subprocess.Popen(['cp',i, backup_path], cwd=self.path)
  
     ##### OPERATIONS ON STARS #####
+
+    # def stellar
 
     def load_parameters(self, Star):
         """
@@ -68,6 +69,11 @@ class BACCHUS(object):
         """
         p = subprocess.Popen(['load_parameters.com',Star.name], cwd=self.path)
         p.wait()
+        
+        p.kill()
+        Star.get_par(self.path + '/{}/'.format(Star.name))
+
+        
 
     def param(self, Star, elem ='Fe'):
         """
@@ -75,6 +81,8 @@ class BACCHUS(object):
         """
         p = subprocess.Popen(['bacchus.param',Star.name, elem], cwd=self.path)
         p.wait()
+
+        Star.get_abundance(elem)
 
     def eqw(self, Star, elem = 'Fe', lines=[],ranges=[]):
         """
@@ -93,6 +101,8 @@ class BACCHUS(object):
         p = subprocess.Popen(['bacchus.eqw',Star.name, elem, lines_str, ranges_str], cwd=self.path)
         p.wait()
 
+        Star.get_abundance(elem)
+
     def abund(self, Star, elem='Fe', lines=[],ranges=[]):
         """
         Runs bacchus.abund . If initial guesses or specific lines are specified it will run on those instead of the default BACCHUS A(x) range & elements.wln line selection.
@@ -110,6 +120,8 @@ class BACCHUS(object):
                 
         p = subprocess.Popen(['bacchus.abund',Star.name, elem], cwd=self.path)
         p.wait()
+
+        Star.get_abundance(elem)
 
     
     ##### LINELISTS & SELECTION #####

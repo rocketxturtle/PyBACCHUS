@@ -9,14 +9,11 @@ import os
 
 def get_linenumber(lines, target, idx=1):
     line_number = -99
-    # with open(fpath) as file:
-    #     f = file.readlines()
     for count,line in enumerate(lines):
         line_text = line.split(' ')
         if len(line_text) > 1:
             if line_text[idx] == target:
                 line_number = count
-    # file.close()
     if line_number > -1:
         return line_number
     else:
@@ -72,3 +69,10 @@ def get_windows(path, element):
                     return windows
             except:
                 pass
+                
+def justify(txt:str, width:int) -> str:
+    prev_txt = txt
+    while((l:=width-len(txt))>0):
+        txt = re.sub(r"(\s+)", r"\1 ", txt, count=l)
+        if(txt == prev_txt): break
+    return txt.rjust(width)

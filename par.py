@@ -9,12 +9,9 @@ import os
 
 from helper_methods import *
 
-class ElementsWLN(object):
+class Par(object):
     def __init__(self,path):
-        self.path = path
-        self.read()
-        
-        self.atomic_numbers = np.arange(1,93,1)
+        self.path = path   
         self.atomic_symbols = ['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al',
  'Si','P','S','Cl','Ar','K','Ca','Sc','Ti','V','Cr','Mn','Fe',
  'Co','Ni','Cu','Zn','Ga','Ge','As','Se','Br','Kr','Rb','Sr','Y',
@@ -24,36 +21,37 @@ class ElementsWLN(object):
  'Au','Hg','Tl','Pb','Bi','Po','At','Rn','Fr','Ra','Ac','Th','Pa',
  'U']
 
-        wln = dict()
-        wln['Atomic_number'] = self.atomic_numbers
-        wln['Atomic_symbol'] = self.atomic_symbols
-        df = pd.DataFrame(wln)
+        self.update()
 
-        alllines = []
-        nlines_used = []
-        for i in df['Atomic_symbol']:
-            lines = get_windows(self.path, i)
-            try:
-                nlines_used.append(len(lines))
-                alllines.append(lines)
-            except:
-                nlines_used.append(0)
-                alllines.append(None)
+    def update(self):
+        self.read()
+        self.models, self.model = self.get_values('MODEL')
+        self.convols, self.convol = self.get_values('convol')
+        self.metallics, self.metallic = self.get_values('METALLIC')
+        self.turbovels, self.turbovel = self.get_values('TURBVEL')
+
+        for i in self.atomic_symbols:
+            all_values, current = self.get_values(i)
+            setattr(self, i, current)
+            setattr(self, i+'_hist', all_values)
         
-        df['N_Lines'] = nlines_used
-        df['Lines'] = alllines
 
-        self.wln = df
-
-    def update_line_selection(self,newfile=False, newfilename=''):
-        output = []
-        for count, i in enumerate(self.wln['Atomic_symbol']):
-            if (self.wln.loc[count,'Lines'] == None) == False:
-                string = '{} {} '.format(self.wln.loc[count,'Atomic_number'], self.wln.loc[count,'Atomic_symbol'])
-                for j in self.wln.loc[count,'Lines']:
-                    string = string + '{} '.format(j)
-                string = string + '\n'
-                output.append(string)
+    def get_values(self, target):
+        current = None
+        history = []
+        for count, i in enumerate(self.lines):
+            line = i.split(' ')
+            if len(line) > 1:
+                if line[1] == target:
+                    value = line[-1].replace('\n','')
+                    if np.isin(target, ['convol','METALLIC','TURBVEL']) or np.isin(target, self.atomic_symbols):
+                        try:
+                            value = float(value.split("'")[1])
+                        except:
+                            value = float(value.split("'")[0])
+                    history.append(value)
+                    current = history[-1]
+        return history, current
 
     def show(self):
         for n, i in enumerate(self.lines):
@@ -73,7 +71,7 @@ class ElementsWLN(object):
             with open(self.path, "w") as file:
                 file.writelines(output)
             file.close()  
-            
+
     def edit(self, line_number, text):
         new_lines = []
         for count,i in enumerate(self.lines):
@@ -97,5 +95,4 @@ class ElementsWLN(object):
     def remove_lines(self, lines2remove):
         truth = np.isin(self.lines,lines2remove)
         self.lines = np.array(self.lines)[truth==False]
-
-        
+            
