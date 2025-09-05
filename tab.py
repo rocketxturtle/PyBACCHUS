@@ -7,54 +7,48 @@ import math
 import subprocess
 import os
 
+from astropy import *
+import astropy.units as u
+from astropy.io import fits
+from astropy.table import Table,vstack,hstack
+from astropy.io import ascii
+
 from helper_methods import *
 
 class Tab(object):
-    def __init__(self,path):
+    def __init__(self, path, parameters):
         self.path = path
-        self.read()
+        self.params = parameters
+        self.table = None
 
+    def read(self):
+        try:
+            # with open(self.path) as file:
+            #     self.lines = file.readlines()
+            # file.close()
+            self.table = Table.read(self.path, format='ascii')
+            
+        except:
+            print('No best parameter file found!!!')
 
+    def make(self):
+        with open(self.path, "w") as file:
+            file.write("#conv Teff +/- err initTeff conv_Teff  logg +/- err initlogg conv_logg met +/- err  initmet xit +/- err initxit conv_xit\n")
+        with open(self.path, "a") as file:
+            file.write("1  {a} +/- {e_a} {a} 1    {b} +/- {e_b} {b} 1    {c} +/- {e_c}  {c}     {d} +/- {e_d} {d} 1\n".format(a=self.params['Teff'][0],e_a=self.params['Teff'][1], b=self.params['logg'][0],e_b=self.params['logg'][1], 
+                                                                                                                              c=self.params['m_h'][0],e_c=self.params['m_h'][1], d=self.params['vmicro'][0],e_d=self.params['vmicro'][1]))
+            file.write("1  {a} +/- {e_a} {a} 1    {b} +/- {e_b} {b} 1    {c} +/- {e_c}  {c}     {d} +/- {e_d} {d} 1\n".format(a=self.params['Teff'][0],e_a=self.params['Teff'][1], b=self.params['logg'][0],e_b=self.params['logg'][1], 
+                                                                                                                              c=self.params['m_h'][0],e_c=self.params['m_h'][1], d=self.params['vmicro'][0],e_d=self.params['vmicro'][1]))
+        self.table = Table.read(self.path, format='ascii')
+
+    
     def show(self):
         for n, i in enumerate(self.lines):
             print('{}, {}'.format(n, i))
-            
-    def read(self):
-        with open(self.path) as file:
-            self.lines = file.readlines()
-        file.close()
+
         
     def write(self,newfile=False, newfilename=''):
-        if newfile==True:
-            with open(newfilename, "w") as file:
-                file.writelines(output)
-            file.close()
+        if newfile:
+            ascii.write(self.table, newfilename, overwrite=True,format="no_header")
         else:
-            with open(self.path, "w") as file:
-                file.writelines(output)
-            file.close()  
-
-    def edit(self, line_number, text):
-        new_lines = []
-        for count,i in enumerate(self.lines):
-            if count != line_number:
-                self.lines[count] = i
-        self.write()
-
-    def add_line(self, line2add, line_num = len(self.lines)):
-        if line_num == len(self.lines):
-            self.lines = np.insert(self.lines,len(self.lines), line2add)
-        else:
-            self.lines = np.insert(self.lines,line_num, line2add)
-                    
-    def add_lines(self, lines2add, linenumbers = []):
-        if linenumbers != []:
-            for count, i in enumerate(lines2add):
-                self.add_line(i, linenumbers[count])
-        else:
-            for count, i in enumerate(lines2add):
-                self.add_line(i)
-
-    def remove_lines(self, lines2remove):
-        truth = np.isin(self.lines,lines2remove)
-        self.lines = np.array(self.lines)[truth==False]
+            ascii.write(self.table, self.path, overwrite=True,format="no_header")
