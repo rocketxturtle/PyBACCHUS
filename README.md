@@ -3,9 +3,7 @@
 [![A rectangular badge, half black half purple containing the text made at Code Astro](https://img.shields.io/badge/Made%20at-Code/Astro-blueviolet.svg)](https://semaphorep.github.io/codeastro/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-A Python Wrapper for running the Brussels Automatic Code for Characterizing High accUracy Spectra (BACCHUS). 
-
-[BACCHUS (https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M/abstract)]
+A Python Wrapper for running the Brussels Automatic Code for Characterizing High accUracy Spectra (BACCHUS (https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M/abstract)).
 
 ## 📖 Table of Contents
 - [Features](#-features)
@@ -114,7 +112,7 @@ We welcome contributions! Please feel free to:
 
 ## 📚 Citation
 
-If you use `PyBACCHUS` in your research, please cite (bibtex):
+If you use `PyBACCHUS` in your research, please cite this code as well as the original citation for BACCHUS:
 
 ```
 @misc{obafgkm,
@@ -124,6 +122,16 @@ If you use `PyBACCHUS` in your research, please cite (bibtex):
   publisher = {Zenodo},
   doi = {10.5281/zenodo.17070806},
   url = {https://github.com/rocketxturtle/PyBACCHUS}
+}
+@software{2016ascl.soft05004M,
+       author = {{Masseron}, Thomas and {Merle}, Thibault and {Hawkins}, Keith},
+        title = "{BACCHUS: Brussels Automatic Code for Characterizing High accUracy Spectra}",
+ howpublished = {Astrophysics Source Code Library, record ascl:1605.004},
+         year = 2016,
+        month = may,
+          eid = {ascl:1605.004},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
 
