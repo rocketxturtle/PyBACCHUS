@@ -1,0 +1,12 @@
+numpy
+os
+pandas
+random
+math
+subprocess
+astropy
+matplotlib
+pytest
+sphinx
+sphinxcontrib-napoleon
+sphinx-rtd-theme
