@@ -48,10 +48,12 @@ A Results object holds all the data for a single element within a Star. It autom
 After you've configured your BACCHUS setup to your liking and written the setup to native BACCHUS, you can follow the same procedure normally used in native BACCHUS
 
 for a BACCHUS object bacchus, and a Star object
+```
 1) bacchus.load_parameters(Star)
 2) bacchus.abund(Star)
 3) bacchus.eqw(Star)
 4) bacchus.param(Star)
+```
 
 
 ## 🚀 Installation
