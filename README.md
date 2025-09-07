@@ -17,7 +17,7 @@ A Python Wrapper for running the Brussels Automatic Code for Characterizing High
 - [License](#-license)
 - [Acknowledgments](#-acknowledgments)
 
-## ✨ Features
+## ✨ Features & Quick Start 
 
 The purpose of this code is to allow interfacing with the native BACCHUS enivroment using Python. This is NOT a version of BACCHUS written in Python, it requires an existing BACCHUS installation to function. 
 
@@ -87,8 +87,6 @@ The package requires the following Python libraries:
 - `matplotlib` - Plotting functionality
 
 These will be automatically installed with the package.
-
-## 🎯 Quick Start 
 
 ## 📁 Project Structure
 
