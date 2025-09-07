@@ -5,7 +5,7 @@
 
 A Python Wrapper for running the Brussels Automatic Code for Characterizing High accUracy Spectra (BACCHUS). 
 
-[BACCHUS (https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M/abstract)][BACCHUS]
+[BACCHUS (https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M/abstract)]
 
 ## 📖 Table of Contents
 - [Features](#-features)
