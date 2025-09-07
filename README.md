@@ -1,7 +1,7 @@
 # PyBACCHUS
 [![DOI](https://zenodo.org/badge/1034636798.svg)](https://doi.org/10.5281/zenodo.17070805)
 [![A rectangular badge, half black half purple containing the text made at Code Astro](https://img.shields.io/badge/Made%20at-Code/Astro-blueviolet.svg)](https://semaphorep.github.io/codeastro/)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 A Python Wrapper for running the Brussels Automatic Code for Characterizing High accUracy Spectra (BACCHUS (https://ui.adsabs.harvard.edu/abs/2016ascl.soft05004M/abstract)).
 
