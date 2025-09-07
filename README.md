@@ -54,6 +54,13 @@ After you've configured your BACCHUS setup to your liking and written the setup 
 
 for a BACCHUS object bacchus, and a Star object
 ```
+import PyBACCHUS
+from PyBACCHUS import *
+from PyBACCHUS.bacchus import BACCHUS
+from PyBACCHUS.star import Star
+
+bacchus = BACCHUS('your path here!')
+
 1) bacchus.load_parameters(Star)
 2) bacchus.abund(Star)
 3) bacchus.eqw(Star)
