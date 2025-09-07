@@ -1,29 +1,23 @@
 from astropy import *
 import astropy.units as u
 from astropy.io import fits
-import numpy as np
-import pandas as pd
 from astropy.table import Table,vstack,hstack
 from astropy.io import ascii
-import random
-import warnings
 
-import math
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from astropy.table import Table
-import glob
 import subprocess
 import os
 
-from helper_methods import *
-from init_com import Init
-from elements_wln import *
-from stellar_parameters import *
-from bsyn_com import *
-from babsma_com import *
-from eqwidt_com import *
-from linelists import *
+from PyBACCHUS.helper_methods import *
+from PyBACCHUS.init_com import *
+from PyBACCHUS.elements_wln import *
+from PyBACCHUS.stellar_parameters import *
+from PyBACCHUS.bsyn_com import *
+from PyBACCHUS.babsma_com import *
+from PyBACCHUS.eqwidt_com import *
+from PyBACCHUS.linelists import *
 
 class BACCHUS(object):
     def __init__(self,path):

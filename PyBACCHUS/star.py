@@ -1,24 +1,14 @@
-from astropy import *
-import astropy.units as u
-from astropy.io import fits
-from astropy.table import Table,vstack,hstack
-from astropy.io import ascii
 import numpy as np
 import pandas as pd
-import random
-import warnings
-
-import math
 import matplotlib.pyplot as plt
-import glob
 
-from BACCHUS import BACCHUS
-from par import *
-from plt import *
-from abu import *
-from eqw import *
-from Results import *
-from tab import *
+from PyBACCHUS.bacchus import *
+from PyBACCHUS.par import *
+from PyBACCHUS.plt import *
+from PyBACCHUS.abu import *
+from PyBACCHUS.eqw import *
+from PyBACCHUS.results import *
+from PyBACCHUS.tab import *
 
 from astropy import *
 import astropy.units as u

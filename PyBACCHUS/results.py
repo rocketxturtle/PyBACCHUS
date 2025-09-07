@@ -1,16 +1,10 @@
 import numpy as np
 import glob
-import pandas as pd
-import random
-import warnings
-import math
-import subprocess
-import os
 
-from helper_methods import *
-from abu import *
-from eqw import *
-from plt import *
+from PyBACCHUS.helper_methods import *
+from PyBACCHUS.abu import *
+from PyBACCHUS.eqw import *
+from PyBACCHUS.plt import *
 
 class Results(object):
     def __init__(self,path,name,elem):
