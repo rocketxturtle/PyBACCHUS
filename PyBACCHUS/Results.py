@@ -38,7 +38,7 @@ class Results(object):
             
             self.EQW = EQW(self.path + '/{}-{}.eqw'.format(self.element,self.name))
             eqws = []
-            for i in glob.glob(self.path + '/{}*.eqw'.format(self.element)):
+            for i in glob.glob(self.path + '/{}*.eqw'.format(self.name,self.element)):
                 eqws.append(EQW(i))
             self.EQW_hist = eqws
 

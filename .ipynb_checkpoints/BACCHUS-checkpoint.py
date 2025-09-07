@@ -81,6 +81,7 @@ class BACCHUS(object):
         """
         p = subprocess.Popen(['bacchus.param',Star.name, elem], cwd=self.path)
         p.wait()
+        p.kill()
 
         Star.get_abundance(elem)
 
@@ -100,6 +101,7 @@ class BACCHUS(object):
                 
         p = subprocess.Popen(['bacchus.eqw',Star.name, elem, lines_str, ranges_str], cwd=self.path)
         p.wait()
+        p.kill()
 
         Star.get_abundance(elem)
 
@@ -120,6 +122,7 @@ class BACCHUS(object):
                 
         p = subprocess.Popen(['bacchus.abund',Star.name, elem], cwd=self.path)
         p.wait()
+        p.kill()
 
         Star.get_abundance(elem)
 

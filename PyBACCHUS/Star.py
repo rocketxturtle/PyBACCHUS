@@ -18,6 +18,13 @@ from plt import *
 from abu import *
 from eqw import *
 from Results import *
+from tab import *
+
+from astropy import *
+import astropy.units as u
+from astropy.io import fits
+from astropy.table import Table,vstack,hstack
+from astropy.io import ascii
 
 class Star(object):
     def __init__(self,name):
@@ -39,24 +46,29 @@ class Star(object):
             self.Abundance[i] = None
         
 
-    def get_par(self, path):
-        self.path = path
-        self.par = Par(self.path + '{}.par'.format(self.name))
-
-    def get_abundance(self, element):
-        self.Abundance[element] = Results(self.path,self.name,element)
-
-    def get_best_parameters(self):
-        self.par = Par(self.path + '{}.par'.format(self.name))
-
     def set_initial_values(self, spectra_path, teff, logg, m_h, v_micro, conv):
         
         self.spectra_path = spectra_path
-        self.teff = teff
-        self.logg = logg
-        self.m_h = m_h
-        self.vmicro = v_micro
-        self.conv = conv
+        self.teff = teff[0]
+        self.logg = logg[0]
+        self.m_h = m_h[0]
+        self.vmicro = v_micro[0]
+        self.conv = conv[0]
+
+        self.e_teff = teff[1]
+        self.e_logg = logg[1]
+        self.e_m_h = m_h[1]
+        self.e_vmicro = v_micro[1]
+        self.e_conv = conv[1]
+
+        params = dict()
+        params['Teff'] = teff
+        params['logg'] = teff
+        params['m_h'] = logg
+        params['vmicro'] = v_micro
+        params['conv'] = conv
+
+        self.params = params
 
     def get_spectrum(self, has_uncertainties=False):
         data = np.loadtxt(self.spectra_path)
@@ -78,27 +90,28 @@ class Star(object):
         if savefig==True:
             plt.savefig('{}_observed_spectrum.jpg'.format(self.name))
 
+    ##### STAR PARAMETERS #####
+    def get_par(self, path):
+        self.path = path
+        self.par = Par(self.path + '{}.par'.format(self.name))
+        
+    def get_best_parameters(self):
+        self.best_parameters = Tab(self.path + '/best_parameters.tab')
+
+    def make_best_parameters(self):
+        self.best_parameters = Tab(self.path + '/best_parameters.tab',self.params)
+        self.best_parameters.make()
+    
+
     ##### ABUNDANCE INFORMATION #####
 
+    def get_abundance(self, element):
+        self.Abundance[element] = Results(self.path,self.name,element)
 
-
-    ##### STAR PARAMETERS #####
-
-    def get_best_params(self):
-        """
-        For stars where bacchus.param is run (or after make_best_params is run) to get the best fit atmospheric parameters.
-        """
+    def make_abundance_table(self,metric, threshold=1):
+        #take only good flags
         pass
-
-    def make_best_params(self,teff,logg,m_H,v_micro,conv, e_teff=100,e_logg=0.1,e_m_H=0.1,e_v_micro=0.1,e_conv=0.1):
-        """
-        Make a pseudo best_parameters.tab file using input guesses
-        """
-        pass
-
-    
-
-    
+        
 
     
         
