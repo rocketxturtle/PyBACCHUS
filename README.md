@@ -25,11 +25,16 @@ There are three primary modules for this package: BACCHUS, Star, and Result.
 
 ### BACCHUS
 The BACCHUS class is instantiated by giving it the location of an existing BACCHUS installation. Once a BACCHUS object is created, it will be populated with the existing state of all the primary bacchus modules:
-- bsyn.com 
-- babsma.com
-- stellar_parameters.tab
-- init.com
-- elements.wln
+
+```
+for a BACCHUS object bacchus
+- bsyn.com --> bacchus.bsyn
+- babsma.com --> bacchus.babsma
+- stellar_parameters.tab --> bacchus.stellar_parameters
+- init.com --> bacchus.init
+- elements.wln --> bacchus.elements_wln
+- eqwidt.com --> bacchus.eqwidt
+```
 
 as well as a linelists object that contains the paths to all available linelists. Each of these modules is accessible in a BACCHUS object as an attribute (e.g. init.com can be accessed by bacchus.init). This allows for editing each module in python, both through direct line-by-line editing, and a suite of preloaded methods (e.g. set_ncpu, set_linelist). MORE DOCUMENTATION COMING.
 
