@@ -28,6 +28,9 @@ The BACCHUS class is instantiated by giving it the location of an existing BACCH
 
 ```
 for a BACCHUS object bacchus
+
+bacchus = BACCHUS('your path here!')
+
 - bsyn.com --> bacchus.bsyn
 - babsma.com --> bacchus.babsma
 - stellar_parameters.tab --> bacchus.stellar_parameters
@@ -65,6 +68,42 @@ bacchus = BACCHUS('your path here!')
 2) bacchus.abund(Star)
 3) bacchus.eqw(Star)
 4) bacchus.param(Star)
+```
+
+### Example
+```
+import PyBACCHUS
+from PyBACCHUS import *
+from PyBACCHUS.bacchus import BACCHUS
+from PyBACCHUS.star import Star
+
+bacchus = BACCHUS('your path here!')
+star = Star(starname)
+
+#let's say we only want to use one CPU and the metal-poor line selenction
+bacchus.init.set_ncpu(1)
+bacchus.init.set_wavereffile('elements_MP.wln')
+
+#check to see your configuration is good
+bacchus.init.show()
+bacchus.bsyn.show()
+
+bacchus.init.write()
+
+#now lets get our star ready. to set its initial guesses, we need a spectra path (str), and teff/logg/mh/vmicro/conv all as tuples of the form (guess, uncertainty).
+
+star.set_initial_values(spectra_path, (5000,100), (4.5, 0.1), (0,0.1),(1.5,0.2), (-15,5))
+bacchus.stellar_parameters.add_star(star)
+bacchus.stellar_parameters.write()
+
+#check to see your stellar_parameters.tab is good
+bacchus.stellar_parameters.show()
+
+#now run your abundance analysis!
+bacchus.load_parameters(star)
+bacchus.param(star)
+bacchus.eqw(star, 'C')
+bacchus.abund(star, 'Zr')
 ```
 
 
