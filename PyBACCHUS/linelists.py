@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import os
 
 from PyBACCHUS.helper_methods import *
 from PyBACCHUS.init_com import *

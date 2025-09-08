@@ -46,11 +46,11 @@ class Bsyn(object):
     def write(self,newfile=False, newfilename=''):
         if newfile==True:
             with open(newfilename, "w") as file:
-                file.writelines(output)
+                file.writelines(self.lines)
             file.close()
         else:
             with open(self.path, "w") as file:
-                file.writelines(output)
+                file.writelines(self.lines)
             file.close()  
 
     def edit(self, line_number, text):
@@ -58,6 +58,8 @@ class Bsyn(object):
         for count,i in enumerate(self.lines):
             if count != line_number:
                 self.lines[count] = i
+            else:
+                self.lines[count] = text
 
     def add_line(self, line2add, line_num = -1):
         if line_num == -1:

@@ -59,9 +59,9 @@ class Plt(object):
             
         if newfile==True:
             with open(newfilename, "w") as file:
-                file.writelines(output)
+                file.writelines(outlines)
             file.close()
         else:
             with open(self.path, "w") as file:
-                file.writelines(output)
+                file.writelines(outlines)
             file.close()  

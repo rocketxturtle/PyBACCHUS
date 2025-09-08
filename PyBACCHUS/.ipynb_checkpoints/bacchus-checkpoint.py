@@ -64,7 +64,7 @@ class BACCHUS(object):
         p = subprocess.Popen(['load_parameters.com',Star.name], cwd=self.path)
         p.wait()
         
-        p.kill()
+        # p.kill()
         Star.get_par(self.path + '/{}/'.format(Star.name))
 
         
