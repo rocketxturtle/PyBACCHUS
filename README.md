@@ -26,8 +26,9 @@ There are three primary modules for this package: BACCHUS, Star, and Result.
 ### BACCHUS
 The BACCHUS class is instantiated by giving it the location of an existing BACCHUS installation. Once a BACCHUS object is created, it will be populated with the existing state of all the primary bacchus modules:
 
-```
 for a BACCHUS object bacchus
+
+```
 
 bacchus = BACCHUS('your path here!')
 
@@ -88,9 +89,11 @@ bacchus.init.set_wavereffile('elements_MP.wln')
 bacchus.init.show()
 bacchus.bsyn.show()
 
+#now we can write out our changes to the init.com file
 bacchus.init.write()
 
-#now lets get our star ready. to set its initial guesses, we need a spectra path (str), and teff/logg/mh/vmicro/conv all as tuples of the form (guess, uncertainty).
+#now lets get our star ready. to set its initial guesses, we need a spectra path (str),
+#and teff/logg/mh/vmicro/conv all as tuples of the form (guess, uncertainty).
 
 star.set_initial_values(spectra_path, (5000,100), (4.5, 0.1), (0,0.1),(1.5,0.2), (-15,5))
 bacchus.stellar_parameters.add_star(star)
