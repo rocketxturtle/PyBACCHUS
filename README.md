@@ -169,7 +169,7 @@ We welcome contributions! Please feel free to:
 If you use `PyBACCHUS` in your research, please cite this code as well as the original citation for BACCHUS:
 
 ```
-@misc{obafgkm,
+@misc{PyBACCHUS,
   author = {},
   title = {PyBACCHUS: Interactive Stellar Spectra Plotting Tool},
   year = {2025},
